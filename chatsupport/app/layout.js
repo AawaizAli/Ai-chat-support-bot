@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
+import ThemeRegistry from './ThemeRegistry'; // Import the client-side theme provider component
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +11,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ThemeRegistry> {/* Wrap the children with ThemeRegistry to apply the theme */}
+          {children}
+        </ThemeRegistry>
+      </body>
     </html>
   );
 }
