@@ -6,19 +6,19 @@ import CssBaseline from '@mui/material/CssBaseline';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#3f51b5',
+      main: '#dbdbdb',
       light: '#757de8',
       dark: '#002984',
       contrastText: '#ffffff',
     },
     secondary: {
-      main: '#f50057',
+      main: '#2e7bff',
       light: '#ff5983',
       dark: '#bb002f',
       contrastText: '#ffffff',
     },
     background: {
-      default: '#f4f6f8',
+      default: '#ffffff',
       paper: '#ffffff',
     },
     text: {

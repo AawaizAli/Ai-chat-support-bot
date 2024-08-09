@@ -2,22 +2,21 @@
 
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { useState } from "react";
-import { marked } from "marked"; // Import the marked library to handle markdown
+import { marked } from "marked";
 
 export default function Home() {
     const [messages, setMessages] = useState([
         {
             role: "assistant",
-            content:
-                "Hello, I'm a beauty icon, ask away...",
+            content: "Ask away...",
         },
     ]);
     const [message, setMessage] = useState("");
 
     const sendMessage = async () => {
-        if (!message.trim()) return; // Prevent sending empty messages
+        if (!message.trim()) return; 
 
-        const userPrompt = { prompt: message }; // Create the JSON object to send
+        const userPrompt = { prompt: message }; 
 
         setMessages((messages) => [
             ...messages,
@@ -57,10 +56,15 @@ export default function Home() {
                             { role: "assistant", content: markdownContent }, // Append the converted HTML to the assistant's message
                         ]);
                     } else {
-                        console.error("Error: 'data' field is missing in the response.");
+                        console.error(
+                            "Error: 'data' field is missing in the response."
+                        );
                     }
                 } catch (error) {
-                    console.error("Error parsing JSON or converting markdown:", error);
+                    console.error(
+                        "Error parsing JSON or converting markdown:",
+                        error
+                    );
                 }
 
                 return reader.read().then(processText); // Continue reading the next chunk of the response
@@ -88,7 +92,7 @@ export default function Home() {
                 spacing={3}>
                 <Stack
                     direction={"column"}
-                    spacing={2}
+                    spacing={1}
                     flexGrow={1}
                     overflow="auto"
                     maxHeight="100%">
@@ -107,10 +111,16 @@ export default function Home() {
                                         ? "primary.main"
                                         : "secondary.main"
                                 }
-                                color="white"
+                                color={
+                                    message.role === "assistant"
+                                        ? "#000000"
+                                        : "#ffffff"
+                                }
                                 borderRadius={12}
                                 p={2}
-                                dangerouslySetInnerHTML={{ __html: message.content }} // Render the HTML content
+                                dangerouslySetInnerHTML={{
+                                    __html: message.content,
+                                }} 
                             />
                         </Box>
                     ))}
