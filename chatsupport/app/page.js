@@ -84,7 +84,7 @@ export default function Home() {
             alignItems="center">
             <Stack
                 direction={"column"}
-                width="3500px"
+                width="350px"
                 height="600px"
                 border="1px solid black"
                 borderRadius="10px"
