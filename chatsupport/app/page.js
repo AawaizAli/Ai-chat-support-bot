@@ -1,8 +1,20 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
+
+import {
+    Box,
+    Button,
+    Stack,
+    TextField,
+    Typography,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton
+} from "@mui/material";
 import { ThumbUp, ThumbDown } from "@mui/icons-material";
 import { useState } from "react";
 import { marked } from "marked";
+import "@fontsource/bungee"; // Importing the Bungee font
 
 export default function Home() {
     const [messages, setMessages] = useState([
@@ -78,17 +90,15 @@ export default function Home() {
     };
 
     const submitFeedback = () => {
-        // Handle feedback submission (send to server, log, etc.)
         console.log("Feedback Type:", feedbackType);
         console.log("Feedback Text:", feedbackText);
-        setOpenFeedback(false); // Close the feedback dialog after submission
-        setFeedbackType(null); // Reset feedback type
-        setFeedbackText(""); // Clear feedback text
+        setOpenFeedback(false);
+        setFeedbackType(null);
+        setFeedbackText("");
     };
 
     return (
-        <Box width="100vw" height="100vh" display="flex" flexDirection="column">
-
+        <Box width="100vw" height="100vh" display="flex" flexDirection="column" alignItems="center">
             {/* Top Right Buttons */}
             <Box
                 display="flex"
@@ -106,54 +116,26 @@ export default function Home() {
                 </Button>
             </Box>
 
-            {/* About Dialog */}
-            <Dialog open={openAbout} onClose={() => setOpenAbout(false)}>
-                <DialogTitle>About</DialogTitle>
-                <DialogContent>
-                    <Typography variant="body1">
-                        I am an AI-powered customer support assistant for Headstarter, a premier platform dedicated to computer science (CS) students and professionals. At Headstarter, we offer a Software Engineering (SWE) fellowship program and provide extensive resources for interview practice. My role is to assist you by answering questions about the SWE fellowship, offering guidance on interview preparation, and helping you navigate the Headstarter website.
-                    </Typography>
-                </DialogContent>
-            </Dialog>
-
-            {/* Feedback Dialog */}
-            <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
-                <DialogTitle>Feedback</DialogTitle>
-                <DialogContent>
-                    <Box display="flex" justifyContent="center" mb={2}>
-                        <IconButton
-                            onClick={() => setFeedbackType("positive")}
-                            color={feedbackType === "positive" ? "primary" : "default"}
-                        >
-                            <ThumbUp />
-                        </IconButton>
-                        <IconButton
-                            onClick={() => setFeedbackType("negative")}
-                            color={feedbackType === "negative" ? "primary" : "default"}
-                        >
-                            <ThumbDown />
-                        </IconButton>
-                    </Box>
-                    <TextField
-                        label="Your feedback"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                        value={feedbackText}
-                        onChange={(e) => setFeedbackText(e.target.value)}
-                    />
-                    <Button
-                        variant="contained"
-                        sx={{ mt: 2 }}
-                        fullWidth
-                        onClick={submitFeedback}
-                        disabled={!feedbackType && !feedbackText.trim()}
-                    >
-                        Submit Feedback
-                    </Button>
-                </DialogContent>
-            </Dialog>
+            {/* Heading */}
+            <Box
+                p={2}
+                mt={6} // Add margin to create space between the buttons and the heading
+                sx={{
+                    textAlign: "center",
+                }}
+            >
+                <Typography
+                    variant="h1"
+                    sx={{
+                        fontFamily: "Bungee, sans-serif",
+                        color: " #2e7bff",
+                        textShadow: "3px 3px 0px #283044",
+                        fontSize: "4rem", // Increased font size
+                    }}
+                >
+                    Welcome to Navi-AI!
+                </Typography>
+            </Box>
 
             {/* Main Chat Box */}
             <Box
@@ -162,6 +144,7 @@ export default function Home() {
                 justifyContent="center"
                 alignItems="center"
                 flexGrow={1}
+                mt={1} // Add margin to create space between the heading and the chat box
             >
                 <Stack
                     direction={"column"}
@@ -222,6 +205,55 @@ export default function Home() {
                     </Stack>
                 </Stack>
             </Box>
+
+            {/* About Dialog */}
+            <Dialog open={openAbout} onClose={() => setOpenAbout(false)}>
+                <DialogTitle>About</DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1">
+                        I am an AI-powered customer support assistant for Headstarter, a premier platform dedicated to computer science (CS) students and professionals. At Headstarter, we offer a Software Engineering (SWE) fellowship program and provide extensive resources for interview practice. My role is to assist you by answering questions about the SWE fellowship, offering guidance on interview preparation, and helping you navigate the Headstarter website.
+                    </Typography>
+                </DialogContent>
+            </Dialog>
+
+            {/* Feedback Dialog */}
+            <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
+                <DialogTitle>Feedback</DialogTitle>
+                <DialogContent>
+                    <Box display="flex" justifyContent="center" mb={2}>
+                        <IconButton
+                            onClick={() => setFeedbackType("positive")}
+                            color={feedbackType === "positive" ? "primary" : "default"}
+                        >
+                            <ThumbUp />
+                        </IconButton>
+                        <IconButton
+                            onClick={() => setFeedbackType("negative")}
+                            color={feedbackType === "negative" ? "primary" : "default"}
+                        >
+                            <ThumbDown />
+                        </IconButton>
+                    </Box>
+                    <TextField
+                        label="Your feedback"
+                        fullWidth
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        value={feedbackText}
+                        onChange={(e) => setFeedbackText(e.target.value)}
+                    />
+                    <Button
+                        variant="contained"
+                        sx={{ mt: 2 }}
+                        fullWidth
+                        onClick={submitFeedback}
+                        disabled={!feedbackType && !feedbackText.trim()}
+                    >
+                        Submit Feedback
+                    </Button>
+                </DialogContent>
+            </Dialog>
         </Box>
     );
 }
