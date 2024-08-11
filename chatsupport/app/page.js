@@ -14,7 +14,7 @@ import {
 import { ThumbUp, ThumbDown } from "@mui/icons-material";
 import { useState } from "react";
 import { marked } from "marked";
-import "@fontsource/bungee"; // Importing the Bungee font
+import "@fontsource/bungee"; 
 
 export default function Home() {
     const [messages, setMessages] = useState([
@@ -99,7 +99,6 @@ export default function Home() {
 
     return (
         <Box width="100vw" height="100vh" display="flex" flexDirection="column" alignItems="center">
-            {/* Top Right Buttons */}
             <Box
                 display="flex"
                 justifyContent="flex-end"
@@ -116,10 +115,9 @@ export default function Home() {
                 </Button>
             </Box>
 
-            {/* Heading */}
             <Box
                 p={2}
-                mt={6} // Add margin to create space between the buttons and the heading
+                mt={6} 
                 sx={{
                     textAlign: "center",
                 }}
@@ -130,7 +128,7 @@ export default function Home() {
                         fontFamily: "Bungee, sans-serif",
                         color: " #2e7bff",
                         textShadow: "3px 3px 0px #283044",
-                        fontSize: "4rem", // Increased font size
+                        fontSize: "4rem", 
                     }}
                 >
                     Welcome to Navi-AI!
@@ -144,7 +142,7 @@ export default function Home() {
                 justifyContent="center"
                 alignItems="center"
                 flexGrow={1}
-                mt={1} // Add margin to create space between the heading and the chat box
+                mt={1} 
             >
                 <Stack
                     direction={"column"}
@@ -206,7 +204,6 @@ export default function Home() {
                 </Stack>
             </Box>
 
-            {/* About Dialog */}
             <Dialog open={openAbout} onClose={() => setOpenAbout(false)}>
                 <DialogTitle>About</DialogTitle>
                 <DialogContent>
@@ -216,7 +213,6 @@ export default function Home() {
                 </DialogContent>
             </Dialog>
 
-            {/* Feedback Dialog */}
             <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
                 <DialogTitle>Feedback</DialogTitle>
                 <DialogContent>
