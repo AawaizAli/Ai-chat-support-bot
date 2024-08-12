@@ -200,7 +200,7 @@ export default function Home() {
                                                 ? "#000000"
                                                 : "#ffffff",
                                         borderRadius: "16px",
-                                        py: "10px",
+                                        py: "7px",
                                         px: "16px",
                                         marginBottom: "10px",
                                     }}
