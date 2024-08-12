@@ -156,7 +156,7 @@ export default function Home() {
                         fontFamily: "Bungee, sans-serif",
                         color: "#2e7bff",
                         textShadow: "3px 3px 0px #283044",
-                        fontSize: "4rem",
+                        fontSize: "3.5rem",
                         "@media (max-width: 600px)": {
                             fontSize: "2.5rem",
                         },
