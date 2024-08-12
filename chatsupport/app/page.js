@@ -199,8 +199,8 @@ export default function Home() {
                                             message.role === "assistant"
                                                 ? "#000000"
                                                 : "#ffffff",
-                                        borderRadius: 2,
-                                        p: 2,
+                                        borderRadius: "16px",
+                                        p: "16px",
                                     }}
                                     dangerouslySetInnerHTML={{
                                         __html: message.content,
