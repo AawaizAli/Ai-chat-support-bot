@@ -177,7 +177,7 @@ export default function Home() {
                             flexGrow: 1,
                             overflow: "auto",
                             maxHeight: "100%",
-                            spacing: 1,
+                            spacing: "20px",
                         }}>
                         {messages.map((message, index) => (
                             <Box
@@ -200,7 +200,8 @@ export default function Home() {
                                                 ? "#000000"
                                                 : "#ffffff",
                                         borderRadius: "16px",
-                                        p: "10px",
+                                        py: "10px",
+                                        px: "16px"
                                     }}
                                     dangerouslySetInnerHTML={{
                                         __html: message.content,
