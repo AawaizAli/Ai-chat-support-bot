@@ -117,13 +117,13 @@ export default function Home() {
                 }}>
                 <Button
                     variant="contained"
-                    sx={{ ml: 2, color: "#2e7bff" }}
+                    sx={{ ml: 2 }}
                     onClick={() => setOpenAbout(true)}>
                     About
                 </Button>
                 <Button
                     variant="contained"
-                    sx={{ ml: 2, color: "#2e7bff" }}
+                    sx={{ ml: 2 }}
                     onClick={() => setOpenFeedback(true)}>
                     Feedback
                 </Button>
@@ -279,7 +279,7 @@ export default function Home() {
                     />
                     <Button
                         variant="contained"
-                        sx={{ mt: 2, color: "#2e7bff" }}
+                        sx={{ mt: 2 }}
                         fullWidth
                         onClick={submitFeedback}
                         disabled={!feedbackType && !feedbackText.trim()}>
