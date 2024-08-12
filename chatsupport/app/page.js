@@ -9,12 +9,12 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    IconButton
+    IconButton,
 } from "@mui/material";
 import { ThumbUp, ThumbDown } from "@mui/icons-material";
 import { useState } from "react";
 import { marked } from "marked";
-import "@fontsource/bungee"; 
+import "@fontsource/bungee";
 
 export default function Home() {
     const [messages, setMessages] = useState([
@@ -105,8 +105,7 @@ export default function Home() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-            }}
-        >
+            }}>
             <Box
                 sx={{
                     display: "flex",
@@ -115,20 +114,17 @@ export default function Home() {
                     position: "absolute",
                     top: 0,
                     right: 0,
-                }}
-            >
+                }}>
                 <Button
                     variant="contained"
-                    sx={{ ml: 2 }}
-                    onClick={() => setOpenAbout(true)}
-                >
+                    sx={{ ml: 2, color: "#2e7bff" }}
+                    onClick={() => setOpenAbout(true)}>
                     About
                 </Button>
                 <Button
                     variant="contained"
-                    sx={{ ml: 2 }}
-                    onClick={() => setOpenFeedback(true)}
-                >
+                    sx={{ ml: 2, color: "#2e7bff" }}
+                    onClick={() => setOpenFeedback(true)}>
                     Feedback
                 </Button>
             </Box>
@@ -138,8 +134,7 @@ export default function Home() {
                     p: 2,
                     mt: 6,
                     textAlign: "center",
-                }}
-            >
+                }}>
                 <Typography
                     variant="h1"
                     sx={{
@@ -148,10 +143,9 @@ export default function Home() {
                         textShadow: "3px 3px 0px #283044",
                         fontSize: "4rem",
                         "@media (max-width: 600px)": {
-                            fontSize: "2.5rem", // Adjust font size for mobile
+                            fontSize: "2.5rem",
                         },
-                    }}
-                >
+                    }}>
                     Welcome to Navi-AI!
                 </Typography>
             </Box>
@@ -165,8 +159,7 @@ export default function Home() {
                     alignItems: "center",
                     flexGrow: 1,
                     mt: 1,
-                }}
-            >
+                }}>
                 <Stack
                     direction={"column"}
                     sx={{
@@ -177,17 +170,15 @@ export default function Home() {
                         marginBottom: "30px",
                         p: 2,
                         spacing: 3,
-                    }}
-                >
+                    }}>
                     <Stack
-                    direction={"column"}
-                    sx={{
-                        flexGrow: 1,
-                        overflow: "auto",
-                        maxHeight: "100%",
-                        spacing: 1,
-                    }}
-                >
+                        direction={"column"}
+                        sx={{
+                            flexGrow: 1,
+                            overflow: "auto",
+                            maxHeight: "100%",
+                            spacing: 1,
+                        }}>
                         {messages.map((message, index) => (
                             <Box
                                 key={index}
@@ -197,8 +188,7 @@ export default function Home() {
                                         message.role === "assistant"
                                             ? "flex-start"
                                             : "flex-end",
-                                }}
-                            >
+                                }}>
                                 <Box
                                     sx={{
                                         bgcolor:
@@ -237,7 +227,15 @@ export default function Home() {
                 <DialogTitle>About</DialogTitle>
                 <DialogContent>
                     <Typography variant="body1">
-                        I am an AI-powered customer support assistant for Headstarter, a premier platform dedicated to computer science (CS) students and professionals. At Headstarter, we offer a Software Engineering (SWE) fellowship program and provide extensive resources for interview practice. My role is to assist you by answering questions about the SWE fellowship, offering guidance on interview preparation, and helping you navigate the Headstarter website.
+                        I am an AI-powered customer support assistant for
+                        Headstarter, a premier platform dedicated to computer
+                        science (CS) students and professionals. At Headstarter,
+                        we offer a Software Engineering (SWE) fellowship program
+                        and provide extensive resources for interview practice.
+                        My role is to assist you by answering questions about
+                        the SWE fellowship, offering guidance on interview
+                        preparation, and helping you navigate the Headstarter
+                        website.
                     </Typography>
                 </DialogContent>
             </Dialog>
@@ -245,17 +243,28 @@ export default function Home() {
             <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
                 <DialogTitle>Feedback</DialogTitle>
                 <DialogContent>
-                    <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            mb: 2,
+                        }}>
                         <IconButton
                             onClick={() => setFeedbackType("positive")}
-                            color={feedbackType === "positive" ? "primary" : "default"}
-                        >
+                            color={
+                                feedbackType === "positive"
+                                    ? "primary"
+                                    : "default"
+                            }>
                             <ThumbUp />
                         </IconButton>
                         <IconButton
                             onClick={() => setFeedbackType("negative")}
-                            color={feedbackType === "negative" ? "primary" : "default"}
-                        >
+                            color={
+                                feedbackType === "negative"
+                                    ? "primary"
+                                    : "default"
+                            }>
                             <ThumbDown />
                         </IconButton>
                     </Box>
@@ -270,11 +279,10 @@ export default function Home() {
                     />
                     <Button
                         variant="contained"
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 2, color: "#2e7bff" }}
                         fullWidth
                         onClick={submitFeedback}
-                        disabled={!feedbackType && !feedbackText.trim()}
-                    >
+                        disabled={!feedbackType && !feedbackText.trim()}>
                         Submit Feedback
                     </Button>
                 </DialogContent>
