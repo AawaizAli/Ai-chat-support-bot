@@ -117,13 +117,28 @@ export default function Home() {
                 }}>
                 <Button
                     variant="contained"
-                    sx={{ ml: 2 }}
+                    sx={{
+                        ml: 2,
+                        bgcolor: "#2e7bff",
+                        color: "#ffffff",
+                        "&:hover": {
+                            bgcolor: "#1c5bbf", // Darker shade for hover
+                        },
+                    }}
                     onClick={() => setOpenAbout(true)}>
                     About
                 </Button>
+
                 <Button
                     variant="contained"
-                    sx={{ ml: 2 }}
+                    sx={{
+                        ml: 2,
+                        bgcolor: "#2e7bff",
+                        color: "#ffffff",
+                        "&:hover": {
+                            bgcolor: "#1c5bbf", // Darker shade for hover
+                        },
+                    }}
                     onClick={() => setOpenFeedback(true)}>
                     Feedback
                 </Button>
@@ -218,7 +233,16 @@ export default function Home() {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                         />
-                        <Button variant="contained" onClick={sendMessage}>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                bgcolor: "#2e7bff",
+                                color: "#ffffff",
+                                "&:hover": {
+                                    bgcolor: "#1c5bbf", // Darker shade for hover
+                                },
+                            }}
+                            onClick={sendMessage}>
                             Send
                         </Button>
                     </Stack>
