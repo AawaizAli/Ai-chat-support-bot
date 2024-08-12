@@ -98,27 +98,45 @@ export default function Home() {
     };
 
     return (
-        <Box width="100vw" height="100vh" display="flex" flexDirection="column" alignItems="center">
+        <Box
+            sx={{
+                width: "100vw",
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+            }}
+        >
             <Box
-                display="flex"
-                justifyContent="flex-end"
-                p={2}
-                position="absolute"
-                top={0}
-                right={0}
+                sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    p: 2,
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                }}
             >
-                <Button variant="contained" sx={{ ml: 2 }} onClick={() => setOpenAbout(true)}>
+                <Button
+                    variant="contained"
+                    sx={{ ml: 2 }}
+                    onClick={() => setOpenAbout(true)}
+                >
                     About
                 </Button>
-                <Button variant="contained" sx={{ ml: 2 }} onClick={() => setOpenFeedback(true)}>
+                <Button
+                    variant="contained"
+                    sx={{ ml: 2 }}
+                    onClick={() => setOpenFeedback(true)}
+                >
                     Feedback
                 </Button>
             </Box>
 
             <Box
-                p={2}
-                mt={6} 
                 sx={{
+                    p: 2,
+                    mt: 6,
                     textAlign: "center",
                 }}
             >
@@ -126,9 +144,12 @@ export default function Home() {
                     variant="h1"
                     sx={{
                         fontFamily: "Bungee, sans-serif",
-                        color: " #2e7bff",
+                        color: "#2e7bff",
                         textShadow: "3px 3px 0px #283044",
-                        fontSize: "4rem", 
+                        fontSize: "4rem",
+                        "@media (max-width: 600px)": {
+                            fontSize: "2.5rem", // Adjust font size for mobile
+                        },
                     }}
                 >
                     Welcome to Navi-AI!
@@ -137,53 +158,60 @@ export default function Home() {
 
             {/* Main Chat Box */}
             <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                flexGrow={1}
-                mt={1} 
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexGrow: 1,
+                    mt: 1,
+                }}
             >
                 <Stack
                     direction={"column"}
-                    width="350px"
-                    height="600px"
-                    border="1px solid black"
-                    borderRadius="10px"
-                    marginBottom="30px"
-                    p={2}
-                    spacing={3}
+                    sx={{
+                        width: "350px",
+                        height: "600px",
+                        border: "1px solid black",
+                        borderRadius: "10px",
+                        marginBottom: "30px",
+                        p: 2,
+                        spacing: 3,
+                    }}
                 >
                     <Stack
-                        direction={"column"}
-                        spacing={1}
-                        flexGrow={1}
-                        overflow="auto"
-                        maxHeight="100%"
-                    >
+                    direction={"column"}
+                    sx={{
+                        flexGrow: 1,
+                        overflow: "auto",
+                        maxHeight: "100%",
+                        spacing: 1,
+                    }}
+                >
                         {messages.map((message, index) => (
                             <Box
                                 key={index}
-                                display="flex"
-                                justifyContent={
-                                    message.role === "assistant"
-                                        ? "flex-start"
-                                        : "flex-end"
-                                }
+                                sx={{
+                                    display: "flex",
+                                    justifyContent:
+                                        message.role === "assistant"
+                                            ? "flex-start"
+                                            : "flex-end",
+                                }}
                             >
                                 <Box
-                                    bgcolor={
-                                        message.role === "assistant"
-                                            ? "primary.main"
-                                            : "secondary.main"
-                                    }
-                                    color={
-                                        message.role === "assistant"
-                                            ? "#000000"
-                                            : "#ffffff"
-                                    }
-                                    borderRadius={12}
-                                    p={2}
+                                    sx={{
+                                        bgcolor:
+                                            message.role === "assistant"
+                                                ? "primary.main"
+                                                : "secondary.main",
+                                        color:
+                                            message.role === "assistant"
+                                                ? "#000000"
+                                                : "#ffffff",
+                                        borderRadius: 2,
+                                        p: 2,
+                                    }}
                                     dangerouslySetInnerHTML={{
                                         __html: message.content,
                                     }}
@@ -217,7 +245,7 @@ export default function Home() {
             <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
                 <DialogTitle>Feedback</DialogTitle>
                 <DialogContent>
-                    <Box display="flex" justifyContent="center" mb={2}>
+                    <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
                         <IconButton
                             onClick={() => setFeedbackType("positive")}
                             color={feedbackType === "positive" ? "primary" : "default"}
