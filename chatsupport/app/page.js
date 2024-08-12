@@ -150,6 +150,7 @@ export default function Home() {
                     height="600px"
                     border="1px solid black"
                     borderRadius="10px"
+                    marginBottom="30px"
                     p={2}
                     spacing={3}
                 >
