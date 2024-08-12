@@ -201,7 +201,8 @@ export default function Home() {
                                                 : "#ffffff",
                                         borderRadius: "16px",
                                         py: "10px",
-                                        px: "16px"
+                                        px: "16px",
+                                        marginBottom: "10px",
                                     }}
                                     dangerouslySetInnerHTML={{
                                         __html: message.content,
