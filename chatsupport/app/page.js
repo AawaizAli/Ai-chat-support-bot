@@ -20,7 +20,10 @@ export default function Home() {
     const [messages, setMessages] = useState([
         {
             role: "assistant",
-            content: "Ask away...",
+            content: `Ask questions from any of our experts! ...
+            Max the Fitness Expert,
+            Vivienne, the fashion queen,
+            and Leo the Science Tutor!`,
         },
     ]);
     const [message, setMessage] = useState("");
@@ -42,7 +45,7 @@ export default function Home() {
         setMessage("");
 
         try {
-            const response = await fetch("/api/chat", {
+            const response = await fetch("/api/fitness", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
