@@ -169,7 +169,7 @@ export default function Home() {
                         borderRadius: "10px",
                         marginBottom: "30px",
                         p: 2,
-                        spacing: 3,
+                        spacing: "20px",
                     }}>
                     <Stack
                         direction={"column"}
@@ -200,7 +200,7 @@ export default function Home() {
                                                 ? "#000000"
                                                 : "#ffffff",
                                         borderRadius: "16px",
-                                        p: "16px",
+                                        p: "10px",
                                     }}
                                     dangerouslySetInnerHTML={{
                                         __html: message.content,
