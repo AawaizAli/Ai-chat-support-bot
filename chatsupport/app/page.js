@@ -45,7 +45,7 @@ export default function Home() {
         setMessage("");
 
         try {
-            const response = await fetch("/api/fitness", {
+            const response = await fetch("/api/study", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
