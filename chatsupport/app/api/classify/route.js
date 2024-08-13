@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const path = require('path');
 
@@ -61,7 +60,7 @@ function predict(prompt) {
     return modelParams.classes_[maxIndex];
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     console.log("Handler triggered.");
 
     if (req.method === 'POST') {
@@ -85,7 +84,7 @@ export default async function handler(req, res) {
 }
 
 // Test the model with a dummy prompt
-const testPrompt = 'What is a moisturizer?';
+const testPrompt = 'What is photosynthesis?';
 const testLabel = predict(testPrompt);
 console.log(`Test prompt: "${testPrompt}"`);
 console.log(`Predicted label: ${testLabel}`);
