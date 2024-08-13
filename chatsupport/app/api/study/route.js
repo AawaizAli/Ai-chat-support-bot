@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-const { GoogleGenerativeAI } = require ('@google/generative-ai');
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Access your API key as an environment variable
 const apiKey = process.env.API_KEY;

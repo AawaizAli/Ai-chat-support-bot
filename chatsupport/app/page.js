@@ -34,63 +34,45 @@ export default function Home() {
 
     const sendMessage = async () => {
         if (!message.trim()) return;
-
+    
         const userPrompt = { prompt: message };
-
+    
         setMessages((messages) => [
             ...messages,
             { role: "user", content: message },
         ]);
-
+    
         setMessage("");
-
+    
         try {
-            const response = await fetch("/api/study", {
+            // Call the classify API to determine which LLM should respond
+            const classifyResponse = await fetch("/api/classify", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(userPrompt),
             });
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-
-            let result = "";
-            await reader.read().then(function processText({ done, value }) {
-                if (done) {
-                    return result;
-                }
-                const text = decoder.decode(value || new Uint8Array(), {
-                    stream: true,
-                });
-
-                try {
-                    const jsonResponse = JSON.parse(text);
-                    if (jsonResponse.data) {
-                        const markdownContent = marked(jsonResponse.data);
-                        setMessages((messages) => [
-                            ...messages,
-                            { role: "assistant", content: markdownContent },
-                        ]);
-                    } else {
-                        console.error(
-                            "Error: 'data' field is missing in the response."
-                        );
-                    }
-                } catch (error) {
-                    console.error(
-                        "Error parsing JSON or converting markdown:",
-                        error
-                    );
-                }
-
-                return reader.read().then(processText);
-            });
+    
+            const classifyData = await classifyResponse.json();
+            const label = classifyData.label; // This should return 'fitness', 'fashion', or 'studies'
+    
+            // Reply with a placeholder message indicating which LLM would respond
+            let responseMessage = `This would be handled by the ${label} expert.`;
+    
+            setMessages((messages) => [
+                ...messages,
+                { role: "assistant", content: responseMessage },
+            ]);
         } catch (error) {
-            console.error("Error sending message:", error);
+            console.error("Error classifying message:", error);
+            setMessages((messages) => [
+                ...messages,
+                { role: "assistant", content: "Sorry, something went wrong." },
+            ]);
         }
     };
+    
 
     const submitFeedback = () => {
         console.log("Feedback Type:", feedbackType);
