@@ -22,7 +22,7 @@ export default function Home() {
             role: "assistant",
             content: `Ask questions from two of our experts! ...
             Vivienne, the fashion queen,
-            and Leo the Science Tutor!`,
+            and Leo the Science and Math Tutor!`,
         },
     ]);
     const [message, setMessage] = useState("");
@@ -247,9 +247,9 @@ export default function Home() {
                 <DialogContent>
                     <Typography variant="body1">
                         Welcome to our expert Q&A chatbot, where you can connect directly with two of our top specialists!
-                    Vivienne, the Fashion Queen: Whether you're looking for the latest trends, styling tips, or fashion advice, Vivienne is here to help you stay ahead of the curve. Her expertise in the fashion world is unparalleled, and she's ready to answer all your style-related questions.
-                    Leo, the Science Tutor: Need help with a tricky science concept? Leo is your go-to tutor for all things science. From biology to physics, he’s here to break down complex topics and make learning science fun and easy.
-                    Ask away and get expert advice in fashion and science right at your fingertips!
+                    Vivienne, the Fashion Queen: Your go-to guru for all things style, trends, and fashion advice. Whether you're looking to revamp your wardrobe or need tips for your next big event, Vivienne has you covered.
+                    Leo, the Science and Math Tutor: From solving tricky math problems to exploring the wonders of science, Leo is here to help. He simplifies complex concepts and guides you through your academic challenges with ease.
+                    Ask your questions and get expert insights tailored just for you!
                     </Typography>
                 </DialogContent>
             </Dialog>
