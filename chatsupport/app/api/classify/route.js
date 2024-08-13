@@ -3,18 +3,27 @@ import path from 'path';
 
 console.log("Starting model loading...");
 
-// Load the model parameters from the JSON file
 let modelParams;
 try {
-    const modelPath = path.resolve(process.cwd(), './chatsupport/app/api/classify/naive_bayes_model.json');
+    const modelPath = path.resolve(process.cwd(), './chatsupport/app/classification_model/naive_bayes_model.json');
     console.log(`Loading model from: ${modelPath}`);
-    
+
+    if (!fs.existsSync(modelPath)) {
+        console.error("Error: Model file does not exist at the specified path.");
+        throw new Error(`Model file not found at ${modelPath}`);
+    }
+
     const modelData = fs.readFileSync(modelPath, 'utf8');
-    modelParams = JSON.parse(modelData);
     
-    console.log("Model successfully loaded.");
+    try {
+        modelParams = JSON.parse(modelData);
+        console.log("Model successfully loaded.");
+    } catch (parseError) {
+        console.error("Error parsing the JSON model file:", parseError);
+        throw new Error("Failed to parse the model JSON file");
+    }
 } catch (error) {
-    console.error("Error loading the model:", error);
+    console.error("Error during model loading:", error);
     throw new Error("Model loading failed");
 }
 
@@ -75,7 +84,7 @@ export default async function handler(req, res) {
 }
 
 // Test the model with a dummy prompt
-const testPrompt = 'What is 2 times 2?';
+const testPrompt = 'What is photosynthesis?';
 const testLabel = predict(testPrompt);
 console.log(`Test prompt: "${testPrompt}"`);
 console.log(`Predicted label: ${testLabel}`);

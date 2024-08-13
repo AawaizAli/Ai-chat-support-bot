@@ -34,16 +34,16 @@ export default function Home() {
 
     const sendMessage = async () => {
         if (!message.trim()) return;
-    
+
         const userPrompt = { prompt: message };
-    
+
         setMessages((messages) => [
             ...messages,
             { role: "user", content: message },
         ]);
-    
+
         setMessage("");
-    
+
         try {
             // Call the classify API to determine which LLM should respond
             const classifyResponse = await fetch("/api/classify", {
@@ -53,13 +53,20 @@ export default function Home() {
                 },
                 body: JSON.stringify(userPrompt),
             });
-    
+
+            if (!classifyResponse.ok) {
+                // If the response is not OK, throw an error
+                throw new Error(
+                    `Server responded with ${classifyResponse.status}`
+                );
+            }
+
             const classifyData = await classifyResponse.json();
             const label = classifyData.label; // This should return 'fitness', 'fashion', or 'studies'
-    
+
             // Reply with a placeholder message indicating which LLM would respond
             let responseMessage = `This would be handled by the ${label} expert.`;
-    
+
             setMessages((messages) => [
                 ...messages,
                 { role: "assistant", content: responseMessage },
@@ -70,9 +77,11 @@ export default function Home() {
                 ...messages,
                 { role: "assistant", content: "Sorry, something went wrong." },
             ]);
+        } finally {
+            // Ensure any cleanup or final actions are taken here
+            console.log("Finished handling the message.");
         }
     };
-    
 
     const submitFeedback = () => {
         console.log("Feedback Type:", feedbackType);
