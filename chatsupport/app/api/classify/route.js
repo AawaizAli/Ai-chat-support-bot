@@ -5,7 +5,7 @@ console.log("Starting model loading...");
 
 let modelParams;
 try {
-    const modelPath = path.resolve(process.cwd(), './chatsupport/app/classification_model/naive_bayes_model.json');
+    const modelPath = path.resolve(process.cwd(), './app/classification_model/naive_bayes_model.json');
     console.log(`Loading model from: ${modelPath}`);
 
     if (!fs.existsSync(modelPath)) {
