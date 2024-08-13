@@ -20,8 +20,7 @@ export default function Home() {
     const [messages, setMessages] = useState([
         {
             role: "assistant",
-            content: `Ask questions from any of our experts! ...
-            Max the Fitness Expert,
+            content: `Ask questions from two of our experts! ...
             Vivienne, the fashion queen,
             and Leo the Science Tutor!`,
         },
@@ -247,15 +246,10 @@ export default function Home() {
                 <DialogTitle>About</DialogTitle>
                 <DialogContent>
                     <Typography variant="body1">
-                        I am an AI-powered customer support assistant for
-                        Headstarter, a premier platform dedicated to computer
-                        science (CS) students and professionals. At Headstarter,
-                        we offer a Software Engineering (SWE) fellowship program
-                        and provide extensive resources for interview practice.
-                        My role is to assist you by answering questions about
-                        the SWE fellowship, offering guidance on interview
-                        preparation, and helping you navigate the Headstarter
-                        website.
+                        Welcome to our expert Q&A chatbot, where you can connect directly with two of our top specialists!
+                    Vivienne, the Fashion Queen: Whether you're looking for the latest trends, styling tips, or fashion advice, Vivienne is here to help you stay ahead of the curve. Her expertise in the fashion world is unparalleled, and she's ready to answer all your style-related questions.
+                    Leo, the Science Tutor: Need help with a tricky science concept? Leo is your go-to tutor for all things science. From biology to physics, he’s here to break down complex topics and make learning science fun and easy.
+                    Ask away and get expert advice in fashion and science right at your fingertips!
                     </Typography>
                 </DialogContent>
             </Dialog>
