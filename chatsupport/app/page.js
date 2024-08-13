@@ -44,8 +44,7 @@ export default function Home() {
         setMessage("");
 
         try {
-            // Call the classify API to determine which LLM should respond
-            const classifyResponse = await fetch("/api/classify", {
+            const response = await fetch("/api/fashion", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -53,32 +52,42 @@ export default function Home() {
                 body: JSON.stringify(userPrompt),
             });
 
-            if (!classifyResponse.ok) {
-                // If the response is not OK, throw an error
-                throw new Error(
-                    `Server responded with ${classifyResponse.status}`
-                );
-            }
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
 
-            const classifyData = await classifyResponse.json();
-            const label = classifyData.label; // This should return 'fitness', 'fashion', or 'studies'
+            let result = "";
+            await reader.read().then(function processText({ done, value }) {
+                if (done) {
+                    return result;
+                }
+                const text = decoder.decode(value || new Uint8Array(), {
+                    stream: true,
+                });
 
-            // Reply with a placeholder message indicating which LLM would respond
-            let responseMessage = `This would be handled by the ${label} expert.`;
+                try {
+                    const jsonResponse = JSON.parse(text);
+                    if (jsonResponse.data) {
+                        const markdownContent = marked(jsonResponse.data);
+                        setMessages((messages) => [
+                            ...messages,
+                            { role: "assistant", content: markdownContent },
+                        ]);
+                    } else {
+                        console.error(
+                            "Error: 'data' field is missing in the response."
+                        );
+                    }
+                } catch (error) {
+                    console.error(
+                        "Error parsing JSON or converting markdown:",
+                        error
+                    );
+                }
 
-            setMessages((messages) => [
-                ...messages,
-                { role: "assistant", content: responseMessage },
-            ]);
+                return reader.read().then(processText);
+            });
         } catch (error) {
-            console.error("Error classifying message:", error);
-            setMessages((messages) => [
-                ...messages,
-                { role: "assistant", content: "Sorry, something went wrong." },
-            ]);
-        } finally {
-            // Ensure any cleanup or final actions are taken here
-            console.log("Finished handling the message.");
+            console.error("Error sending message:", error);
         }
     };
 
@@ -246,10 +255,17 @@ export default function Home() {
                 <DialogTitle>About</DialogTitle>
                 <DialogContent>
                     <Typography variant="body1">
-                        Welcome to our expert Q&A chatbot, where you can connect directly with two of our top specialists!
-                    Vivienne, the Fashion Queen: Your go-to guru for all things style, trends, and fashion advice. Whether you're looking to revamp your wardrobe or need tips for your next big event, Vivienne has you covered.
-                    Leo, the Science and Math Tutor: From solving tricky math problems to exploring the wonders of science, Leo is here to help. He simplifies complex concepts and guides you through your academic challenges with ease.
-                    Ask your questions and get expert insights tailored just for you!
+                        Welcome to our expert Q&A chatbot, where you can connect
+                        directly with two of our top specialists! Vivienne, the
+                        Fashion Queen: Your go-to guru for all things style,
+                        trends, and fashion advice. Whether you're looking to
+                        revamp your wardrobe or need tips for your next big
+                        event, Vivienne has you covered. Leo, the Science and
+                        Math Tutor: From solving tricky math problems to
+                        exploring the wonders of science, Leo is here to help.
+                        He simplifies complex concepts and guides you through
+                        your academic challenges with ease. Ask your questions
+                        and get expert insights tailored just for you!
                     </Typography>
                 </DialogContent>
             </Dialog>
