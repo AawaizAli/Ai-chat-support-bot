@@ -1,5 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+
+const fs = require('fs');
+const path = require('path');
 
 console.log("Starting model loading...");
 
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
 }
 
 // Test the model with a dummy prompt
-const testPrompt = 'What is photosynthesis?';
+const testPrompt = 'What is a moisturizer?';
 const testLabel = predict(testPrompt);
 console.log(`Test prompt: "${testPrompt}"`);
 console.log(`Predicted label: ${testLabel}`);

@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { NextResponse } from "next/server";
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Access your API key as an environment variable
 const apiKey = process.env.API_KEY;
@@ -19,28 +19,30 @@ If a user asks a question that is unrelated to makeup, skincare, or fashion, pol
 `;
 
 export async function POST(request) {
-  try {
-    const body = await request.json();
-    const userPrompt = body.prompt || "Ask me anything related to fashion.";
+    try {
+        const body = await request.json();
+        const userPrompt = body.prompt || "Ask me anything related to fashion.";
 
-    const combinedPrompt = `${systemPrompt} The user asks: "${userPrompt}"`;
+        const combinedPrompt = `${systemPrompt} The user asks: "${userPrompt}"`;
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const result = await model.generateContent(combinedPrompt);
-    const text = await result.response.text();
+        const result = await model.generateContent(combinedPrompt);
+        const text = await result.response.text();
 
-    return NextResponse.json({
-      success: true,
-      data: text,
-    });
+        return NextResponse.json({
+            success: true,
+            data: text,
+        });
+    } catch (error) {
+        console.error("Error processing request:", error);
 
-  } catch (error) {
-    console.error('Error processing request:', error);
-
-    return NextResponse.json({
-      success: false,
-      error: error.message,
-    }, { status: 500 });
-  }
+        return NextResponse.json(
+            {
+                success: false,
+                error: error.message,
+            },
+            { status: 500 }
+        );
+    }
 }
