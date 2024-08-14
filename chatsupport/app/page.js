@@ -228,7 +228,7 @@ export default function Home() {
                         textShadow: "3px 3px 0px #283044",
                         fontSize: "3.5rem",
                         "@media (max-width: 600px)": {
-                            fontSize: "2.5rem",
+                            fontSize: "2rem",
                         },
                     }}>
                     Welcome to Navi-AI!
