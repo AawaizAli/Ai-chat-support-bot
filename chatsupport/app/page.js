@@ -18,7 +18,6 @@ import { marked } from "marked";
 import "@fontsource/bungee";
 
 export default function Home() {
-
     const [messages, setMessages] = useState([
         {
             role: "assistant",
@@ -37,15 +36,15 @@ export default function Home() {
     useEffect(() => {
         const fetchModelParams = async () => {
             try {
-                const response = await fetch('/saved_naive_bayes_model.json'); 
+                const response = await fetch("/saved_naive_bayes_model.json");
                 if (!response.ok) {
-                    throw new Error('Failed to load model parameters');
+                    throw new Error("Failed to load model parameters");
                 }
                 const data = await response.json();
                 console.log(data);
                 setModelParams(data);
             } catch (error) {
-                console.error('Error fetching model parameters:', error);
+                console.error("Error fetching model parameters:", error);
             }
         };
         fetchModelParams();
@@ -62,7 +61,9 @@ export default function Home() {
         const tokens = prompt.split(/\s+/);
         console.log("Tokens:", tokens);
 
-        const vector = new Array(Object.keys(modelParams.vocabulary_).length).fill(0);
+        const vector = new Array(
+            Object.keys(modelParams.vocabulary_).length
+        ).fill(0);
         console.log("Initial vector:", vector);
 
         tokens.forEach((token) => {
@@ -78,7 +79,10 @@ export default function Home() {
             const logProb =
                 modelParams.class_log_prior_[classIndex] +
                 vector.reduce((sum, value, i) => {
-                    return sum + value * modelParams.feature_log_prob_[classIndex][i];
+                    return (
+                        sum +
+                        value * modelParams.feature_log_prob_[classIndex][i]
+                    );
                 }, 0);
             console.log(
                 `Log probability for class "${modelParams.classes_[classIndex]}": ${logProb}`
@@ -92,18 +96,18 @@ export default function Home() {
 
         return modelParams.classes_[maxIndex];
     }
-    
+
     const sendMessage = async () => {
         if (!message.trim()) return;
-    
+
         const userPrompt = message;
         const predictedLabel = predict(userPrompt); // Predict the category
-    
+
         setMessages((messages) => [
             ...messages,
             { role: "user", content: message },
         ]);
-    
+
         let apiUrl = "";
         switch (predictedLabel) {
             case "fashion":
@@ -115,18 +119,26 @@ export default function Home() {
             case "neither":
                 setMessages((messages) => [
                     ...messages,
-                    { role: "assistant", content: "The prompt is unrelated. Please ask questions related to fashion or studies." },
+                    {
+                        role: "assistant",
+                        content:
+                            "The prompt is unrelated. Please ask questions related to fashion or studies.",
+                    },
                 ]);
                 return;
             default:
                 console.error("Unexpected label:", predictedLabel);
                 setMessages((messages) => [
                     ...messages,
-                    { role: "assistant", content: "Sorry, I couldn't determine the category of your question." },
+                    {
+                        role: "assistant",
+                        content:
+                            "Sorry, I couldn't determine the category of your question.",
+                    },
                 ]);
                 return;
         }
-    
+
         try {
             const response = await fetch(apiUrl, {
                 method: "POST",
@@ -135,10 +147,10 @@ export default function Home() {
                 },
                 body: JSON.stringify({ prompt: userPrompt }),
             });
-    
+
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
-    
+
             let result = "";
             await reader.read().then(function processText({ done, value }) {
                 if (done) {
@@ -147,7 +159,7 @@ export default function Home() {
                 const text = decoder.decode(value || new Uint8Array(), {
                     stream: true,
                 });
-    
+
                 try {
                     const jsonResponse = JSON.parse(text);
                     if (jsonResponse.data) {
@@ -167,20 +179,23 @@ export default function Home() {
                         error
                     );
                 }
-    
+
                 return reader.read().then(processText);
             });
         } catch (error) {
             console.error("Error sending message:", error);
             setMessages((messages) => [
                 ...messages,
-                { role: "assistant", content: "There was an error processing your request. Please try again later." },
+                {
+                    role: "assistant",
+                    content:
+                        "There was an error processing your request. Please try again later.",
+                },
             ]);
         }
-    
+
         setMessage("");
     };
-    
 
     const submitFeedback = () => {
         console.log("Feedback Type:", feedbackType);
@@ -199,44 +214,6 @@ export default function Home() {
                 flexDirection: "column",
                 alignItems: "center",
             }}>
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    p: 2,
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                }}>
-                <Button
-                    variant="contained"
-                    sx={{
-                        ml: 2,
-                        bgcolor: "#2e7bff",
-                        color: "#ffffff",
-                        "&:hover": {
-                            bgcolor: "#1c5bbf", // Darker shade for hover
-                        },
-                    }}
-                    onClick={() => setOpenAbout(true)}>
-                    About
-                </Button>
-
-                <Button
-                    variant="contained"
-                    sx={{
-                        ml: 2,
-                        bgcolor: "#2e7bff",
-                        color: "#ffffff",
-                        "&:hover": {
-                            bgcolor: "#1c5bbf", // Darker shade for hover
-                        },
-                    }}
-                    onClick={() => setOpenFeedback(true)}>
-                    Feedback
-                </Button>
-            </Box>
-
             <Box
                 sx={{
                     p: 2,
@@ -340,6 +317,46 @@ export default function Home() {
                         </Button>
                     </Stack>
                 </Stack>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        p: 2,
+                        position: {
+                            xs: "static", // Removes position on extra small screens and up to small screens
+                            sm: "absolute", // Applies absolute positioning on small screens and larger
+                        },
+                        top: 0,
+                        right: 0,
+                    }}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            ml: 2,
+                            bgcolor: "#2e7bff",
+                            color: "#ffffff",
+                            "&:hover": {
+                                bgcolor: "#1c5bbf", // Darker shade for hover
+                            },
+                        }}
+                        onClick={() => setOpenAbout(true)}>
+                        About
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        sx={{
+                            ml: 2,
+                            bgcolor: "#2e7bff",
+                            color: "#ffffff",
+                            "&:hover": {
+                                bgcolor: "#1c5bbf", // Darker shade for hover
+                            },
+                        }}
+                        onClick={() => setOpenFeedback(true)}>
+                        Feedback
+                    </Button>
+                </Box>
             </Box>
 
             <Dialog open={openAbout} onClose={() => setOpenAbout(false)}>
