@@ -239,7 +239,7 @@ export default function Home() {
                             fontSize: "2rem",
                         },
                     }}>
-                    Welcome to FabNFormula-AI!
+                    Welcome to Fab'N'Formula-AI!
                 </Typography>
             </Box>
 
@@ -285,11 +285,14 @@ export default function Home() {
                                 <Box
                                     sx={{
                                         bgcolor:
-                                            message.label === "fashion"
-                                                ? "#d2b4e1"
-                                                : message.label === "studies"
-                                                ? "#75ffae"
-                                                : "#a9a9a9",
+                                            message.role === "assistant"
+                                                ? message.label === "fashion"
+                                                    ? "#fcccff"
+                                                    : message.label ===
+                                                      "studies"
+                                                    ? "#ccffe6"
+                                                    : "#dbdbdb"
+                                                : "#2e7bff", 
                                         color:
                                             message.role === "assistant"
                                                 ? "#000000"
@@ -383,7 +386,9 @@ export default function Home() {
                 </Dialog>
 
                 {/* Feedback Dialog */}
-                <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
+                <Dialog
+                    open={openFeedback}
+                    onClose={() => setOpenFeedback(false)}>
                     <DialogTitle>Give Feedback</DialogTitle>
                     <DialogContent>
                         <Stack spacing={2}>
@@ -392,12 +397,20 @@ export default function Home() {
                             </Typography>
                             <Stack direction="row" spacing={1}>
                                 <IconButton
-                                    color={feedbackType === "positive" ? "primary" : "default"}
+                                    color={
+                                        feedbackType === "positive"
+                                            ? "primary"
+                                            : "default"
+                                    }
                                     onClick={() => setFeedbackType("positive")}>
                                     <ThumbUp />
                                 </IconButton>
                                 <IconButton
-                                    color={feedbackType === "negative" ? "primary" : "default"}
+                                    color={
+                                        feedbackType === "negative"
+                                            ? "primary"
+                                            : "default"
+                                    }
                                     onClick={() => setFeedbackType("negative")}>
                                     <ThumbDown />
                                 </IconButton>
@@ -408,9 +421,13 @@ export default function Home() {
                                 rows={4}
                                 fullWidth
                                 value={feedbackText}
-                                onChange={(e) => setFeedbackText(e.target.value)}
+                                onChange={(e) =>
+                                    setFeedbackText(e.target.value)
+                                }
                             />
-                            <Button variant="contained" onClick={submitFeedback}>
+                            <Button
+                                variant="contained"
+                                onClick={submitFeedback}>
                                 Submit
                             </Button>
                         </Stack>
@@ -420,4 +437,3 @@ export default function Home() {
         </Box>
     );
 }
-
