@@ -257,7 +257,7 @@ export default function Home() {
                     direction={"column"}
                     sx={{
                         width: "350px",
-                        height: "560px",
+                        height: {xs:"590px", sm:"560px"},
                         border: "1px solid black",
                         borderRadius: "10px",
                         marginBottom: "30px",
