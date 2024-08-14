@@ -13,11 +13,12 @@ import {
     IconButton,
 } from "@mui/material";
 import { ThumbUp, ThumbDown } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { marked } from "marked";
 import "@fontsource/bungee";
 
 export default function Home() {
+
     const [messages, setMessages] = useState([
         {
             role: "assistant",
@@ -27,69 +28,84 @@ export default function Home() {
         },
     ]);
     const [message, setMessage] = useState("");
+    const [modelParams, setModelParams] = useState(null);
     const [openAbout, setOpenAbout] = useState(false);
     const [openFeedback, setOpenFeedback] = useState(false);
     const [feedbackText, setFeedbackText] = useState("");
     const [feedbackType, setFeedbackType] = useState(null);
 
+    useEffect(() => {
+        const fetchModelParams = async () => {
+            try {
+                const response = await fetch('/saved_naive_bayes_model.json'); 
+                if (!response.ok) {
+                    throw new Error('Failed to load model parameters');
+                }
+                const data = await response.json();
+                console.log(data);
+                setModelParams(data);
+            } catch (error) {
+                console.error('Error fetching model parameters:', error);
+            }
+        };
+        fetchModelParams();
+    }, []);
+
+    function predict(prompt) {
+        if (!modelParams) {
+            console.error("Model parameters not loaded.");
+            return null;
+        }
+
+        console.log(`Received prompt: "${prompt}"`);
+
+        const tokens = prompt.split(/\s+/);
+        console.log("Tokens:", tokens);
+
+        const vector = new Array(Object.keys(modelParams.vocabulary_).length).fill(0);
+        console.log("Initial vector:", vector);
+
+        tokens.forEach((token) => {
+            const index = modelParams.vocabulary_[token];
+            if (index !== undefined) {
+                vector[index] += 1;
+            }
+        });
+
+        console.log("Vector after processing tokens:", vector);
+
+        const logProbs = modelParams.classes_.map((_, classIndex) => {
+            const logProb =
+                modelParams.class_log_prior_[classIndex] +
+                vector.reduce((sum, value, i) => {
+                    return sum + value * modelParams.feature_log_prob_[classIndex][i];
+                }, 0);
+            console.log(
+                `Log probability for class "${modelParams.classes_[classIndex]}": ${logProb}`
+            );
+            return logProb;
+        });
+
+        const maxIndex = logProbs.indexOf(Math.max(...logProbs));
+        console.log("Predicted class index:", maxIndex);
+        console.log("Predicted class:", modelParams.classes_[maxIndex]);
+
+        return modelParams.classes_[maxIndex];
+    }
+    
     const sendMessage = async () => {
         if (!message.trim()) return;
 
-        const userPrompt = { prompt: message };
+        const userPrompt = message;
+        const predictedLabel = predict(userPrompt); // Predict the category
 
         setMessages((messages) => [
             ...messages,
             { role: "user", content: message },
+            { role: "assistant", content: `Predicted category: ${predictedLabel}` },
         ]);
 
         setMessage("");
-
-        try {
-            const response = await fetch("/api/fashion", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(userPrompt),
-            });
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-
-            let result = "";
-            await reader.read().then(function processText({ done, value }) {
-                if (done) {
-                    return result;
-                }
-                const text = decoder.decode(value || new Uint8Array(), {
-                    stream: true,
-                });
-
-                try {
-                    const jsonResponse = JSON.parse(text);
-                    if (jsonResponse.data) {
-                        const markdownContent = marked(jsonResponse.data);
-                        setMessages((messages) => [
-                            ...messages,
-                            { role: "assistant", content: markdownContent },
-                        ]);
-                    } else {
-                        console.error(
-                            "Error: 'data' field is missing in the response."
-                        );
-                    }
-                } catch (error) {
-                    console.error(
-                        "Error parsing JSON or converting markdown:",
-                        error
-                    );
-                }
-
-                return reader.read().then(processText);
-            });
-        } catch (error) {
-            console.error("Error sending message:", error);
-        }
     };
 
     const submitFeedback = () => {
