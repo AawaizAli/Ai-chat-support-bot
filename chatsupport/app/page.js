@@ -95,18 +95,92 @@ export default function Home() {
     
     const sendMessage = async () => {
         if (!message.trim()) return;
-
+    
         const userPrompt = message;
         const predictedLabel = predict(userPrompt); // Predict the category
-
+    
         setMessages((messages) => [
             ...messages,
             { role: "user", content: message },
-            { role: "assistant", content: `Predicted category: ${predictedLabel}` },
         ]);
-
+    
+        let apiUrl = "";
+        switch (predictedLabel) {
+            case "fashion":
+                apiUrl = "/api/fashion";
+                break;
+            case "studies":
+                apiUrl = "/api/study";
+                break;
+            case "neither":
+                setMessages((messages) => [
+                    ...messages,
+                    { role: "assistant", content: "The prompt is unrelated. Please ask questions related to fashion or studies." },
+                ]);
+                return;
+            default:
+                console.error("Unexpected label:", predictedLabel);
+                setMessages((messages) => [
+                    ...messages,
+                    { role: "assistant", content: "Sorry, I couldn't determine the category of your question." },
+                ]);
+                return;
+        }
+    
+        try {
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ prompt: userPrompt }),
+            });
+    
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+    
+            let result = "";
+            await reader.read().then(function processText({ done, value }) {
+                if (done) {
+                    return result;
+                }
+                const text = decoder.decode(value || new Uint8Array(), {
+                    stream: true,
+                });
+    
+                try {
+                    const jsonResponse = JSON.parse(text);
+                    if (jsonResponse.data) {
+                        const markdownContent = marked(jsonResponse.data);
+                        setMessages((messages) => [
+                            ...messages,
+                            { role: "assistant", content: markdownContent },
+                        ]);
+                    } else {
+                        console.error(
+                            "Error: 'data' field is missing in the response."
+                        );
+                    }
+                } catch (error) {
+                    console.error(
+                        "Error parsing JSON or converting markdown:",
+                        error
+                    );
+                }
+    
+                return reader.read().then(processText);
+            });
+        } catch (error) {
+            console.error("Error sending message:", error);
+            setMessages((messages) => [
+                ...messages,
+                { role: "assistant", content: "There was an error processing your request. Please try again later." },
+            ]);
+        }
+    
         setMessage("");
     };
+    
 
     const submitFeedback = () => {
         console.log("Feedback Type:", feedbackType);
