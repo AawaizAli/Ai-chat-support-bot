@@ -216,8 +216,8 @@ export default function Home() {
             }}>
             <Box
                 sx={{
-                    p: 2,
-                    mt: 6,
+                    p: 1,
+                    mt: 1,
                     textAlign: "center",
                 }}>
                 <Typography
@@ -249,7 +249,7 @@ export default function Home() {
                     direction={"column"}
                     sx={{
                         width: "350px",
-                        height: "600px",
+                        height: "560px",
                         border: "1px solid black",
                         borderRadius: "10px",
                         marginBottom: "30px",
