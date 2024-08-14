@@ -24,6 +24,7 @@ export default function Home() {
             content: `Ask questions from two of our experts! ...
             Vivienne, the fashion queen,
             and Leo the Science and Math Tutor!`,
+            label: "neither",
         },
     ]);
     const [message, setMessage] = useState("");
@@ -105,7 +106,7 @@ export default function Home() {
 
         setMessages((messages) => [
             ...messages,
-            { role: "user", content: message },
+            { role: "user", content: message, label: predictedLabel },
         ]);
 
         let apiUrl = "";
@@ -123,6 +124,7 @@ export default function Home() {
                         role: "assistant",
                         content:
                             "The prompt is unrelated. Please ask questions related to fashion or studies.",
+                        label: "neither",
                     },
                 ]);
                 return;
@@ -134,6 +136,7 @@ export default function Home() {
                         role: "assistant",
                         content:
                             "Sorry, I couldn't determine the category of your question.",
+                        label: "neither",
                     },
                 ]);
                 return;
@@ -166,7 +169,11 @@ export default function Home() {
                         const markdownContent = marked(jsonResponse.data);
                         setMessages((messages) => [
                             ...messages,
-                            { role: "assistant", content: markdownContent },
+                            {
+                                role: "assistant",
+                                content: markdownContent,
+                                label: predictedLabel,
+                            },
                         ]);
                     } else {
                         console.error(
@@ -190,6 +197,7 @@ export default function Home() {
                     role: "assistant",
                     content:
                         "There was an error processing your request. Please try again later.",
+                    label: "neither",
                 },
             ]);
         }
@@ -231,7 +239,7 @@ export default function Home() {
                             fontSize: "2rem",
                         },
                     }}>
-                    Welcome to Navi-AI!
+                    Welcome to FabNFormula-AI!
                 </Typography>
             </Box>
 
@@ -277,9 +285,11 @@ export default function Home() {
                                 <Box
                                     sx={{
                                         bgcolor:
-                                            message.role === "assistant"
-                                                ? "primary.main"
-                                                : "secondary.main",
+                                            message.label === "fashion"
+                                                ? "#d2b4e1"
+                                                : message.label === "studies"
+                                                ? "#75ffae"
+                                                : "#a9a9a9",
                                         color:
                                             message.role === "assistant"
                                                 ? "#000000"
@@ -317,11 +327,14 @@ export default function Home() {
                         </Button>
                     </Stack>
                 </Stack>
+
+                {/* Buttons Box */}
                 <Box
                     sx={{
                         display: "flex",
                         justifyContent: "flex-end",
                         p: 2,
+                        flexDirection: "column", // Stack buttons vertically
                         position: {
                             xs: "static", // Removes position on extra small screens and up to small screens
                             sm: "absolute", // Applies absolute positioning on small screens and larger
@@ -332,99 +345,78 @@ export default function Home() {
                     <Button
                         variant="contained"
                         sx={{
-                            ml: 2,
+                            mb: 2, // Margin bottom to separate the buttons
                             bgcolor: "#2e7bff",
                             color: "#ffffff",
                             "&:hover": {
-                                bgcolor: "#1c5bbf", // Darker shade for hover
+                                bgcolor: "#1c5bbf",
                             },
                         }}
                         onClick={() => setOpenAbout(true)}>
                         About
                     </Button>
-
                     <Button
                         variant="contained"
                         sx={{
-                            ml: 2,
                             bgcolor: "#2e7bff",
                             color: "#ffffff",
                             "&:hover": {
-                                bgcolor: "#1c5bbf", // Darker shade for hover
+                                bgcolor: "#1c5bbf",
                             },
                         }}
                         onClick={() => setOpenFeedback(true)}>
                         Feedback
                     </Button>
                 </Box>
+
+                {/* About Dialog */}
+                <Dialog open={openAbout} onClose={() => setOpenAbout(false)}>
+                    <DialogTitle>About</DialogTitle>
+                    <DialogContent>
+                        <Typography variant="body1">
+                            Welcome to FabNFormula-AI! This app allows you to
+                            chat with our two experts: Vivienne, the fashion
+                            queen, and Leo, the Science and Math Tutor! Ask away
+                            and get the best advice tailored just for you.
+                        </Typography>
+                    </DialogContent>
+                </Dialog>
+
+                {/* Feedback Dialog */}
+                <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
+                    <DialogTitle>Give Feedback</DialogTitle>
+                    <DialogContent>
+                        <Stack spacing={2}>
+                            <Typography variant="body1">
+                                How would you rate your experience?
+                            </Typography>
+                            <Stack direction="row" spacing={1}>
+                                <IconButton
+                                    color={feedbackType === "positive" ? "primary" : "default"}
+                                    onClick={() => setFeedbackType("positive")}>
+                                    <ThumbUp />
+                                </IconButton>
+                                <IconButton
+                                    color={feedbackType === "negative" ? "primary" : "default"}
+                                    onClick={() => setFeedbackType("negative")}>
+                                    <ThumbDown />
+                                </IconButton>
+                            </Stack>
+                            <TextField
+                                label="Additional Feedback"
+                                multiline
+                                rows={4}
+                                fullWidth
+                                value={feedbackText}
+                                onChange={(e) => setFeedbackText(e.target.value)}
+                            />
+                            <Button variant="contained" onClick={submitFeedback}>
+                                Submit
+                            </Button>
+                        </Stack>
+                    </DialogContent>
+                </Dialog>
             </Box>
-
-            <Dialog open={openAbout} onClose={() => setOpenAbout(false)}>
-                <DialogTitle>About</DialogTitle>
-                <DialogContent>
-                    <Typography variant="body1">
-                        Welcome to our expert Q&A chatbot, where you can connect
-                        directly with two of our top specialists! Vivienne, the
-                        Fashion Queen: Your go-to guru for all things style,
-                        trends, and fashion advice. Whether you're looking to
-                        revamp your wardrobe or need tips for your next big
-                        event, Vivienne has you covered. Leo, the Science and
-                        Math Tutor: From solving tricky math problems to
-                        exploring the wonders of science, Leo is here to help.
-                        He simplifies complex concepts and guides you through
-                        your academic challenges with ease. Ask your questions
-                        and get expert insights tailored just for you!
-                    </Typography>
-                </DialogContent>
-            </Dialog>
-
-            <Dialog open={openFeedback} onClose={() => setOpenFeedback(false)}>
-                <DialogTitle>Feedback</DialogTitle>
-                <DialogContent>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            mb: 2,
-                        }}>
-                        <IconButton
-                            onClick={() => setFeedbackType("positive")}
-                            color={
-                                feedbackType === "positive"
-                                    ? "primary"
-                                    : "default"
-                            }>
-                            <ThumbUp />
-                        </IconButton>
-                        <IconButton
-                            onClick={() => setFeedbackType("negative")}
-                            color={
-                                feedbackType === "negative"
-                                    ? "primary"
-                                    : "default"
-                            }>
-                            <ThumbDown />
-                        </IconButton>
-                    </Box>
-                    <TextField
-                        label="Your feedback"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                        value={feedbackText}
-                        onChange={(e) => setFeedbackText(e.target.value)}
-                    />
-                    <Button
-                        variant="contained"
-                        sx={{ mt: 2 }}
-                        fullWidth
-                        onClick={submitFeedback}
-                        disabled={!feedbackType && !feedbackText.trim()}>
-                        Submit Feedback
-                    </Button>
-                </DialogContent>
-            </Dialog>
         </Box>
     );
 }
